@@ -15,11 +15,11 @@ In production this status would trigger an alert and a reconciliation job.
 ### Transport errors are treated as "unknown charge state"
 If the HTTP call times out or the connection drops, we cannot know whether the provider
 processed the charge. The log message says exactly this and recommends reconciliation.
-We do **not** retry automatically — a retry on an unknown state risks double-charging.
+We do **not** retry automatically â€” a retry on an unknown state risks double-charging.
 
 ### `IPaymentProvider` interface
 Separates the HTTP transport from the business logic completely. Tests use `PaymentProviderStub`
-— a simple field-settable stub — so every scenario is reproducible without HTTP infrastructure.
+â€” a simple field-settable stub â€” so every scenario is reproducible without HTTP infrastructure.
 
 ### Validation is a pure static function
 `PaymentRequestValidator.Validate()` takes a request and returns a string or null.
@@ -33,9 +33,9 @@ per merchant or per order without additional tooling.
 | Topic | What I'd add |
 |---|---|
 | **Persistence** | Record every attempt and outcome in a database before and after the provider call |
+| **Endpoint security** | Require authentication and authorization for the public endpoint enforce role-based access control, rate limits and input quotas|
 | **Retry policy** | Retry *only* on confirmed-not-processed errors (e.g. connection refused before the request left the machine), with exponential back-off |
-| **3DS flow** | The `threeds_required` result hands back a URL — a real implementation would need a webhook / redirect flow to complete the charge |
-| **Metrics** | Emit counters for approved / declined / unexpected per merchant for anomaly detection |
+| **3DS flow** | The `threeds_required` result hands back a URL â€” a real implementation would need a webhook / redirect flow to complete the charge |
 | **Secrets** | Bearer token via environment variable / secret manager, never hardcoded |
 | **More currencies** | Drive the supported currency list from config, not a hardcoded set |
 
