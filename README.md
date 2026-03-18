@@ -1,3 +1,35 @@
+---
+
+## Project Structure
+
+### Core Engine (`PaymentEngine/`)
+
+| File | Purpose |
+|---|---|
+| **`IPaymentService.cs`** | Public interface — the single entry point for charging a customer. Callers depend on this interface, never on the concrete implementation. |
+| **`PaymentService.cs`** | Orchestrates a charge: validates the request, calls the provider, interprets the response, and logs every outcome. All business logic lives here. |
+| **`Models/PaymentRequest.cs`** | Input data object — contains merchant ID, order ID, amount, currency, and card token. |
+| **`Models/PaymentResult.cs`** | Output data object — structured result returned to the caller with status (Approved, Declined, ThreeDsRequired, etc.) and relevant fields. |
+| **`Validation/PaymentRequestValidator.cs`** | Pure static function that validates `PaymentRequest`. Returns `null` if valid, or an error message string if invalid. No dependencies, no side effects. |
+
+### Provider Integration (`PaymentEngine/Provider/`)
+
+| File | Purpose |
+|---|---|
+| **`IPaymentProvider.cs`** | Interface abstracting the HTTP call to the external payment provider. Tests inject a fake implementation; production uses the real HTTP client. |
+| **`PaymentProvider.cs`** | Real HTTP implementation — sends a `POST /charges` request to the provider API with Bearer auth, deserializes the response, and handles network failures. |
+| **`ProviderChargeRequest.cs`** | JSON payload sent to the provider API (amount, currency, card_token). Uses `[JsonPropertyName]` to match the provider's snake_case contract. |
+| **`ProviderChargeResponse.cs`** | JSON response from the provider. All fields are nullable to safely deserialize unknown or malformed shapes. |
+| **`ProviderResult.cs`** | Internal wrapper around the HTTP result — captures status code, parsed response, raw body (for logging unexpected responses), and transport errors (network timeouts). |
+
+### Tests (`PaymentEngine.Tests/`)
+
+| File | Purpose |
+|---|---|
+| **`PaymentServiceTests.cs`** | Unit tests covering validation, approved/declined/3DS flows, undocumented provider responses, and network failures. No real HTTP — uses a stub. |
+| **`PaymentProviderStub.cs`** | Test double for `IPaymentProvider`. Field-settable — tests configure the result before calling the service, making every scenario reproducible without HTTP infrastructure. |
+
+---
 
 ## Key Decisions
 
