@@ -1,5 +1,3 @@
----
-
 ## Project Structure
 
 ### Core Engine (`PaymentEngine/`)
@@ -29,7 +27,6 @@
 | **`PaymentServiceTests.cs`** | Unit tests covering validation, approved/declined/3DS flows, undocumented provider responses, and network failures. No real HTTP — uses a stub. |
 | **`PaymentProviderStub.cs`** | Test double for `IPaymentProvider`. Field-settable — tests configure the result before calling the service, making every scenario reproducible without HTTP infrastructure. |
 
----
 
 ## Key Decisions
 
