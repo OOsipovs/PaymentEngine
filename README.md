@@ -1,3 +1,37 @@
+# Payment Engine
+
+A C# (.NET 8) implementation of a payment engine that charges customers via an external payment provider.
+
+---
+
+## Prerequisites
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) or higher
+
+---
+
+## How to Run
+
+The solution can be opened in any code editor (Visual Studio, VS Code, Rider, etc.) or built/tested from the command line.
+
+### Build the project
+
+```
+dotnet build
+```
+
+### Run the project
+
+```
+dotnet run --project PaymentEngine
+```
+
+### Run the tests
+
+```
+dotnet test PaymentEngine.Tests
+```
+
 ## Project Structure
 
 ### Core Engine (`PaymentEngine/`)

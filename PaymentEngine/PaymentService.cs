@@ -86,7 +86,6 @@ namespace PaymentEngine
 
             var response = result.Response;
 
-            // HTTP 200 responses
             if (result.HttpStatusCode == 200)
             {
                 return response?.Status switch
